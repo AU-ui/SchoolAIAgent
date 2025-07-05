@@ -1,0 +1,764 @@
+{
+  "info": {
+    "_postman_id": "edtech-backend-collection-001",
+    "name": "EdTech Backend API Collection",
+    "description": "Complete API collection for EdTech Platform with authentication, user management, and role-based endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "description": "User registration, login, and authentication management",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newteacher@school.com\",\n  \"password\": \"SecurePass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"role\": \"teacher\",\n  \"phone\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/signup",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "signup"]
+            },
+            "description": "Register a new user (admin, teacher, parent, or student)"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@demoschool.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login with email and password to get access and refresh tokens"
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{verificationToken}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/verify-email",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "verify-email"]
+            },
+            "description": "Verify email address using the token sent via email"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@school.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/forgot-password",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "forgot-password"]
+            },
+            "description": "Request password reset email"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"newPassword\": \"NewSecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/reset-password",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "reset-password"]
+            },
+            "description": "Reset password using token from email"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/refresh",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "refresh"]
+            },
+            "description": "Get new access token using refresh token"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/logout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "logout"]
+            },
+            "description": "Logout and invalidate refresh token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 User Management",
+      "description": "User profile management and settings",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/users/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", "profile"]
+            },
+            "description": "Get current user's profile information"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated Name\",\n  \"lastName\": \"Updated Last\",\n  \"phone\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", "profile"]
+            },
+            "description": "Update current user's profile information"
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"oldpassword\",\n  \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users/change-password",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", "change-password"]
+            },
+            "description": "Change user's password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍🏫 Teacher Endpoints",
+      "description": "Teacher-specific functionality",
+      "item": [
+        {
+          "name": "Get Teacher Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "profile"]
+            },
+            "description": "Get teacher's profile and class information"
+          }
+        },
+        {
+          "name": "Get Classes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/classes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "classes"]
+            },
+            "description": "Get all classes assigned to the teacher"
+          }
+        },
+        {
+          "name": "Get Students in Class",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/classes/{{classId}}/students",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "classes", "{{classId}}", "students"]
+            },
+            "description": "Get list of students in a specific class"
+          }
+        },
+        {
+          "name": "Mark Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-07-01\",\n  \"attendanceData\": [\n    {\n      \"studentId\": \"{{studentId}}\",\n      \"status\": \"present\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/classes/{{classId}}/attendance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "classes", "{{classId}}", "attendance"]
+            },
+            "description": "Mark attendance for students in a class"
+          }
+        },
+        {
+          "name": "Get Attendance Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/classes/{{classId}}/attendance?startDate=2024-07-01&endDate=2024-07-31",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "classes", "{{classId}}", "attendance"],
+              "query": [
+                { "key": "startDate", "value": "2024-07-01" },
+                { "key": "endDate", "value": "2024-07-31" }
+              ]
+            },
+            "description": "Get attendance report for a class within date range"
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Math Assignment\",\n  \"description\": \"Complete exercises 1-10\",\n  \"dueDate\": \"2024-07-15T23:59:59Z\",\n  \"priority\": \"medium\",\n  \"assignedTo\": [\"{{studentId}}\"]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "tasks"]
+            },
+            "description": "Create a new task/assignment for students"
+          }
+        },
+        {
+          "name": "Get Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/teacher/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "teacher", "tasks"]
+            },
+            "description": "Get all tasks created by the teacher"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍👩‍👧‍👦 Parent Endpoints",
+      "description": "Parent-specific functionality",
+      "item": [
+        {
+          "name": "Get Parent Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/parent/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "profile"]
+            },
+            "description": "Get parent's profile and linked students"
+          }
+        },
+        {
+          "name": "Get Fees",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/parent/fees",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "fees"]
+            },
+            "description": "Get fee information for linked students"
+          }
+        },
+        {
+          "name": "Pay Fees",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feeId\": \"{{feeId}}\",\n  \"amount\": 1000,\n  \"paymentMethod\": \"card\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/parent/fees/pay",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "fees", "pay"]
+            },
+            "description": "Make a fee payment"
+          }
+        },
+        {
+          "name": "Get Student Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/parent/students/{{studentId}}/progress",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "students", "{{studentId}}", "progress"]
+            },
+            "description": "Get academic progress of a linked student"
+          }
+        },
+        {
+          "name": "Get Communication",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/parent/communication",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "communication"]
+            },
+            "description": "Get messages and notifications from school"
+          }
+        },
+        {
+          "name": "Send Message to Teacher",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientId\": \"{{teacherId}}\",\n  \"subject\": \"Question about homework\",\n  \"content\": \"My child needs help with the math assignment.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/parent/messages",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "parent", "messages"]
+            },
+            "description": "Send a message to a teacher"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👨‍🎓 Student Endpoints",
+      "description": "Student-specific functionality",
+      "item": [
+        {
+          "name": "Get Student Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/student/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "profile"]
+            },
+            "description": "Get student's profile and class information"
+          }
+        },
+        {
+          "name": "Get Assignments",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/student/assignments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "assignments"]
+            },
+            "description": "Get all assignments assigned to the student"
+          }
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"My assignment submission\",\n  \"attachments\": [\"file1.pdf\", \"file2.jpg\"]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/student/assignments/{{assignmentId}}/submit",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "assignments", "{{assignmentId}}", "submit"]
+            },
+            "description": "Submit an assignment"
+          }
+        },
+        {
+          "name": "Get Grades",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/student/grades",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "grades"]
+            },
+            "description": "Get student's grades and academic performance"
+          }
+        },
+        {
+          "name": "Get Attendance",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/student/attendance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "attendance"]
+            },
+            "description": "Get student's attendance record"
+          }
+        },
+        {
+          "name": "Get Schedule",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/student/schedule",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "student", "schedule"]
+            },
+            "description": "Get student's class schedule"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💼 Admin Endpoints",
+      "description": "Administrative functionality for school management",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@school.com\",\n  \"password\": \"SecurePass123!\",\n  \"firstName\": \"New\",\n  \"lastName\": \"User\",\n  \"role\": \"teacher\",\n  \"phone\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/admin/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "users"]
+            },
+            "description": "Create a new user (admin only)"
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/users?role=teacher&page=1&limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "users"],
+              "query": [
+                { "key": "role", "value": "teacher" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            },
+            "description": "Get all users with filtering and pagination"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Name\",\n  \"role\": \"teacher\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/admin/users/{{userId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "users", "{{userId}}"]
+            },
+            "description": "Update user information (admin only)"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/users/{{userId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "users", "{{userId}}"]
+            },
+            "description": "Delete a user (admin only)"
+          }
+        },
+        {
+          "name": "Get System Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/reports?type=attendance&startDate=2024-07-01&endDate=2024-07-31",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "reports"],
+              "query": [
+                { "key": "type", "value": "attendance" },
+                { "key": "startDate", "value": "2024-07-01" },
+                { "key": "endDate", "value": "2024-07-31" }
+              ]
+            },
+            "description": "Get system-wide reports and analytics"
+          }
+        },
+        {
+          "name": "Manage Classes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/classes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "classes"]
+            },
+            "description": "Get all classes in the system"
+          }
+        },
+        {
+          "name": "Create Class",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Grade 10 Mathematics\",\n  \"description\": \"Advanced mathematics course\",\n  \"gradeLevel\": \"10\",\n  \"academicYear\": \"2024-2025\",\n  \"teacherId\": \"{{teacherId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/admin/classes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "admin", "classes"]
+            },
+            "description": "Create a new class"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "accessToken", "value": "your_access_token_here", "description": "JWT access token for authentication" },
+    { "key": "refreshToken", "value": "your_refresh_token_here", "description": "JWT refresh token for getting new access tokens" },
+    { "key": "verificationToken", "value": "your_verification_token_here", "description": "Email verification token" },
+    { "key": "resetToken", "value": "your_reset_token_here", "description": "Password reset token" },
+    { "key": "userId", "value": "user-uuid-here", "description": "User ID for specific user operations" },
+    { "key": "classId", "value": "class-uuid-here", "description": "Class ID for class-specific operations" },
+    { "key": "studentId", "value": "student-uuid-here", "description": "Student ID for student-specific operations" },
+    { "key": "teacherId", "value": "teacher-uuid-here", "description": "Teacher ID for teacher-specific operations" },
+    { "key": "assignmentId", "value": "assignment-uuid-here", "description": "Assignment ID for assignment operations" },
+    { "key": "taskId", "value": "task-uuid-here", "description": "Task ID for task operations" },
+    { "key": "feeId", "value": "fee-uuid-here", "description": "Fee ID for fee operations" }
+  ]
+} 
